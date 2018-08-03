@@ -9,7 +9,7 @@
 			"<rootDir>/tests/__tests__/"
 		],
 		"testRegex": "./tests/__tests__/.*.(js|jsx)$",
-		"setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.js",
+		"setupTestFrameworkScriptFile": "<rootDir>/tests/setupTests.js",
 		"testPathIgnorePatterns": [
 			"<rootDir>/tests/__tests__/setup/"
 		],
