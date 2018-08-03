@@ -13,7 +13,7 @@ import Game from './Game';
 import Help from './Help';
 import Navigation from './Navigation';
 
-class HotCold extends React.Component {
+export class HotCold extends React.Component {
 	toggleGame() {
 		this.props.actions.newGame();
 	}
