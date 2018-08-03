@@ -7,13 +7,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as actions from '../actions';
+import * as actions from '../redux/actions';
 
 import Game from './Game';
 import Help from './Help';
 import Navigation from './Navigation';
 
-export class HotCold extends React.Component {
+class HotCold extends React.Component {
 	toggleGame() {
 		this.props.actions.newGame();
 	}
@@ -44,8 +44,15 @@ HotCold.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	showHelp: state.showHelp
+	showHelp: state.data.showHelp
 });
+
+// function mapStateToProps(state) {
+// 	console.log('mapStateToProps; state ', state);
+// 	return {
+// 		showHelp: state.data.showHelp
+// 	};
+// }
 
 const mapDispatchToProps = dispatch => ({
 	actions: bindActionCreators(actions, dispatch)

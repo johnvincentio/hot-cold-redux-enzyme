@@ -4,7 +4,7 @@
 
 import { NEW_GAME, TOGGLE_HELP, TOGGLE_ANSWER, HANDLE_GUESS } from '../actions';
 
-import Utils from '../utils';
+import Utils from '../../utils';
 
 const initialState = {
 	guesses: [],
@@ -15,8 +15,8 @@ const initialState = {
 	showAnswer: false
 };
 
-export const hotColdReducer = (state = initialState, action) => {
-	// console.log('hotColdReducer; state ', state, ' action ', action);
+function data(state = initialState, action) {
+	console.log('hotColdReducer; state ', state, ' action ', action);
 	if (action.type === NEW_GAME) {
 		return Object.assign({}, initialState, {
 			answer: Utils.randomInteger(1, 100)
@@ -45,4 +45,6 @@ export const hotColdReducer = (state = initialState, action) => {
 		return state;
 	}
 	return state;
-};
+}
+
+export default data;

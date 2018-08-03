@@ -68,12 +68,12 @@ GuessForm.propTypes = {
 function mapStateToProps(state) {
 	// console.log('GuessForm::mapStateToProps, state ', state);
 	return {
-		guesses: state.guesses,
-		answer: state.answer,
-		text: state.text,
-		victory: state.victory,
-		showHelp: state.showHelp,
-		showAnswer: state.showAnswer
+		guesses: state.data.guesses,
+		answer: state.data.answer,
+		text: state.data.text,
+		victory: state.data.victory,
+		showHelp: state.data.showHelp,
+		showAnswer: state.data.showAnswer
 	};
 }
 

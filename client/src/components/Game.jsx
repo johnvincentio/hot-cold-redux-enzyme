@@ -27,8 +27,8 @@ Game.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	guesses: state.guesses,
-	text: state.text
+	guesses: state.data.guesses,
+	text: state.data.text
 });
 
 export default connect(mapStateToProps)(Game);
