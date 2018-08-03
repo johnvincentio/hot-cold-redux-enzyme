@@ -1,42 +1,29 @@
 //
 
-/* global describe, it, jest, expect, beforeEach */
+/* global describe, it, expect, beforeEach */
 
 import React from 'react';
 import { Provider } from 'react-redux';
 
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import configureStore from '../../../src/store/configureStore';
-
-import data from '../../../src/redux/reducers/data.reducer';
-import { newGame, toggleHelp, toggleAnswer, handleGuess } from '../../../src/redux/actions';
 
 import { HotCold } from '../../../src/components';
 
 import Game from '../../../src/components/Game';
-// import Navigation from '../../../src/components/Navigation';
-// import Help from '../../../src/components/Help';
 
 import Utils from '../../../src/utils';
 
-describe.only('HotCold integration', () => {
+describe('HotCold integration', () => {
 	let store;
 	let state;
-
-	const showHelp = false;
-	const actions = {
-		newGame: jest.fn(),
-		toggleHelp: jest.fn()
-	};
-	const toggleGame = jest.fn();
-	const toggleHelp = jest.fn();
 
 	beforeEach(() => {
 		store = configureStore();
 		state = store.getState();
 		// console.log('beforeEach; store ', store);
-		console.log('beforeEach; store.getState() ', store.getState());
+		// console.log('beforeEach; store.getState() ', store.getState());
 	});
 
 	describe('smoke-test', () => {
@@ -85,41 +72,54 @@ describe.only('HotCold integration', () => {
 			expect(state.data.guesses.length).toEqual(1);
 		});
 
-		// it('Feedback for all values', () => {
-		// 	const wrapper = mount(<HotCold />);
-		// 	wrapper.setState({ answer });
-		// 	expect(wrapper.state().answer).toEqual(answer);
+		it('Feedback for all values', () => {
+			const wrapper = mount(
+				<Provider store={store}>
+					<HotCold />
+				</Provider>
+			);
 
-		// 	const button = wrapper.find('form > button');
-		// 	expect(button.text()).toEqual('Guess');
-		// 	const input = wrapper.find('input[type="text"]');
+			const { answer } = state.data;
 
-		// 	for (let value = 1; value < 99; value++) {
-		// 		const text = Utils.handleComment(answer, value);
-		// 		input.instance().value = value;
-		// 		button.simulate('click');
-		// 		expect(wrapper.state().text).toEqual(text);
-		// 		expect(wrapper.state().guesses.length).toEqual(value);
-		// 	}
-		// });
+			const button = wrapper.find('form > button');
+			expect(button.text()).toEqual('Guess');
+			const input = wrapper.find('input[type="text"]');
 
-		// it('Victory', () => {
-		// 	const wrapper = mount(<HotCold />);
-		// 	wrapper.setState({ answer });
-		// 	expect(wrapper.state().answer).toEqual(answer);
+			for (let value = 1, cntr = 0; value < 99; value++) {
+				if (value !== answer) {
+					const text = Utils.handleComment(answer, value);
+					input.instance().value = value;
+					button.simulate('click');
 
-		// 	const button = wrapper.find('form > button');
-		// 	expect(button.text()).toEqual('Guess');
-		// 	const input = wrapper.find('input[type="text"]');
+					state = store.getState();
+					expect(state.data.text).toEqual(text);
+					expect(state.data.guesses.length).toEqual(++cntr);
+				}
+			}
+		});
 
-		// 	const value = answer;
-		// 	const text = Utils.handleComment(answer, value);
-		// 	input.instance().value = value;
-		// 	button.simulate('click');
-		// 	expect(wrapper.state().text).toEqual(text);
-		// 	expect(wrapper.state().guesses.length).toEqual(1);
+		it('Victory', () => {
+			const wrapper = mount(
+				<Provider store={store}>
+					<HotCold />
+				</Provider>
+			);
 
-		// 	expect(wrapper.state().victory).toEqual(true);
-		// });
+			const { answer } = state.data;
+
+			const button = wrapper.find('form > button');
+			expect(button.text()).toEqual('Guess');
+			const input = wrapper.find('input[type="text"]');
+
+			const value = answer;
+			const text = Utils.handleComment(answer, value);
+			input.instance().value = value;
+			button.simulate('click');
+
+			state = store.getState();
+			expect(state.data.text).toEqual(text);
+			expect(state.data.guesses.length).toEqual(1);
+			expect(state.data.victory).toEqual(true);
+		});
 	});
 });
