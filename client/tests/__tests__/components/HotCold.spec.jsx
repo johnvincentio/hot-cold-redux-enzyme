@@ -5,20 +5,24 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import configureStore from '../../../src/store/configureStore';
 
+import data from '../../../src/redux/reducers/data.reducer';
+import { newGame, toggleHelp, toggleAnswer, handleGuess } from '../../../src/redux/actions';
+
 import { HotCold } from '../../../src/components';
 
-// import Game from '../../../src/components/Game';
+import Game from '../../../src/components/Game';
 // import Navigation from '../../../src/components/Navigation';
 // import Help from '../../../src/components/Help';
 
 import Utils from '../../../src/utils';
 
-describe('HotCold integration', () => {
+describe.only('HotCold integration', () => {
 	let store;
+	let state;
 
 	const showHelp = false;
 	const actions = {
@@ -30,106 +34,92 @@ describe('HotCold integration', () => {
 
 	beforeEach(() => {
 		store = configureStore();
-		console.log('beforeEach; store ', store);
+		state = store.getState();
+		// console.log('beforeEach; store ', store);
+		console.log('beforeEach; store.getState() ', store.getState());
 	});
 
-	describe.only('smoke-test', () => {
+	describe('smoke-test', () => {
 		it('Renders without crashing', () => {
 			const wrapper = mount(
 				<Provider store={store}>
 					<HotCold />
 				</Provider>
 			);
-			// shallow(<HotCold showHelp={showHelp} actions={actions} />);
+			expect(wrapper.contains(<Game />)).toBe(true);
 		});
-
-		// it('Renders Game component', () => {
-		// 	const wrapper = shallow(<HotCold showHelp={showHelp} actions={actions} />);
-		// 	expect(wrapper.contains(<Game />)).toBe(true);
-		// });
-
-		// it('Renders Navigation component', () => {
-		// 	const wrapper = shallow(<HotCold showHelp={showHelp} actions={actions} />);
-		// 	expect(wrapper.contains(<Navigation toggleHelp={toggleHelp} toggleGame={toggleGame} />)).toBe(
-		// 		true
-		// 	);
-		// });
-
-		// it('1 - Does not render Help component', () => {
-		// 	const wrapper = shallow(<HotCold showHelp={showHelp} actions={actions} />);
-		// 	expect(wrapper.contains(<Help toggleHelp={toggleHelp} />)).toBe(true);
-		// });
-
-		// it('2 - Does not render Help component', () => {
-		// 	const wrapper = mount(<HotCold showHelp={showHelp} actions={actions} />);
-		// 	expect(wrapper.contains(<Help toggleHelp={toggleHelp} />)).toBe(false);
-		// });
 	});
 
-	describe.skip('properties-state', () => {
-		const answer = 99;
-
+	describe.only('properties-state', () => {
 		it('Check initial state', () => {
-			const wrapper = shallow(<HotCold showHelp={showHelp} actions={actions} />);
-			expect(wrapper.state().guesses).toEqual([]);
-			expect(wrapper.state().showHelp).toEqual(false);
-			expect(wrapper.state().victory).toEqual(false);
-			wrapper.setState({ answer });
-			expect(wrapper.state().answer).toEqual(answer);
+			mount(
+				<Provider store={store}>
+					<HotCold />
+				</Provider>
+			);
+			expect(state.data.guesses).toEqual([]);
+			expect(state.data.showHelp).toEqual(false);
+			expect(state.data.victory).toEqual(false);
 		});
 
 		it('Feedback', () => {
-			const wrapper = mount(<HotCold />);
-			wrapper.setState({ answer });
-			expect(wrapper.state().answer).toEqual(answer);
+			const wrapper = mount(
+				<Provider store={store}>
+					<HotCold />
+				</Provider>
+			);
+
+			const { answer } = state.data;
 
 			const button = wrapper.find('form > button');
 			expect(button.text()).toEqual('Guess');
 			const input = wrapper.find('input[type="text"]');
 
-			const value = 10;
+			const value = Math.abs(answer - 1);
 			const text = Utils.handleComment(answer, value);
 			input.instance().value = value;
 			button.simulate('click');
-			expect(wrapper.state().text).toEqual(text);
-			expect(wrapper.state().guesses.length).toEqual(1);
+
+			state = store.getState();
+			expect(state.data.text).toEqual(text);
+			expect(state.data.guesses.length).toEqual(1);
 		});
 
-		it('Feedback for all values', () => {
-			const wrapper = mount(<HotCold />);
-			wrapper.setState({ answer });
-			expect(wrapper.state().answer).toEqual(answer);
+		// it('Feedback for all values', () => {
+		// 	const wrapper = mount(<HotCold />);
+		// 	wrapper.setState({ answer });
+		// 	expect(wrapper.state().answer).toEqual(answer);
 
-			const button = wrapper.find('form > button');
-			expect(button.text()).toEqual('Guess');
-			const input = wrapper.find('input[type="text"]');
+		// 	const button = wrapper.find('form > button');
+		// 	expect(button.text()).toEqual('Guess');
+		// 	const input = wrapper.find('input[type="text"]');
 
-			for (let value = 1; value < 99; value++) {
-				const text = Utils.handleComment(answer, value);
-				input.instance().value = value;
-				button.simulate('click');
-				expect(wrapper.state().text).toEqual(text);
-				expect(wrapper.state().guesses.length).toEqual(value);
-			}
-		});
+		// 	for (let value = 1; value < 99; value++) {
+		// 		const text = Utils.handleComment(answer, value);
+		// 		input.instance().value = value;
+		// 		button.simulate('click');
+		// 		expect(wrapper.state().text).toEqual(text);
+		// 		expect(wrapper.state().guesses.length).toEqual(value);
+		// 	}
+		// });
 
-		it('Victory', () => {
-			const wrapper = mount(<HotCold />);
-			wrapper.setState({ answer });
-			expect(wrapper.state().answer).toEqual(answer);
+		// it('Victory', () => {
+		// 	const wrapper = mount(<HotCold />);
+		// 	wrapper.setState({ answer });
+		// 	expect(wrapper.state().answer).toEqual(answer);
 
-			const button = wrapper.find('form > button');
-			expect(button.text()).toEqual('Guess');
-			const input = wrapper.find('input[type="text"]');
+		// 	const button = wrapper.find('form > button');
+		// 	expect(button.text()).toEqual('Guess');
+		// 	const input = wrapper.find('input[type="text"]');
 
-			const value = answer;
-			const text = Utils.handleComment(answer, value);
-			input.instance().value = value;
-			button.simulate('click');
-			expect(wrapper.state().text).toEqual(text);
-			expect(wrapper.state().guesses.length).toEqual(1);
+		// 	const value = answer;
+		// 	const text = Utils.handleComment(answer, value);
+		// 	input.instance().value = value;
+		// 	button.simulate('click');
+		// 	expect(wrapper.state().text).toEqual(text);
+		// 	expect(wrapper.state().guesses.length).toEqual(1);
 
-			expect(wrapper.state().victory).toEqual(true);
-		});
+		// 	expect(wrapper.state().victory).toEqual(true);
+		// });
 	});
 });

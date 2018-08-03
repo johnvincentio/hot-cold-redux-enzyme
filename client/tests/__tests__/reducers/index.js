@@ -3,6 +3,7 @@
 /* global describe, it, expect */
 
 import data from '../../../src/redux/reducers/data.reducer';
+
 import { newGame, toggleHelp, toggleAnswer, handleGuess } from '../../../src/redux/actions';
 
 import Utils from '../../../src/utils';
