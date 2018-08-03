@@ -11,7 +11,7 @@ import {
 	toggleAnswer,
 	HANDLE_GUESS,
 	handleGuess
-} from '../../../src/actions';
+} from '../../../src/redux/actions';
 
 describe('newGame', () => {
 	it('Should return the action', () => {

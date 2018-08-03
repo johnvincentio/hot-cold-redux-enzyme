@@ -16,7 +16,7 @@ const initialState = {
 };
 
 function data(state = initialState, action) {
-	console.log('dataReducer; state ', state, ' action ', action);
+	// console.log('dataReducer; state ', state, ' action ', action);
 	if (action.type === NEW_GAME) {
 		return Object.assign({}, initialState, {
 			answer: Utils.randomInteger(1, 100)

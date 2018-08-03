@@ -2,14 +2,14 @@
 
 /* global describe, it, expect */
 
-import { hotColdReducer } from '../../../src/reducers';
-import { newGame, toggleHelp, toggleAnswer, handleGuess } from '../../../src/actions';
+import data from '../../../src/redux/reducers/data.reducer';
+import { newGame, toggleHelp, toggleAnswer, handleGuess } from '../../../src/redux/actions';
 
 import Utils from '../../../src/utils';
 
-describe('hotColdReducer', () => {
+describe('data', () => {
 	it('Should set the initial state when nothing is passed in', () => {
-		const state = hotColdReducer(undefined, { type: '__UNKNOWN' });
+		const state = data(undefined, { type: '__UNKNOWN' });
 		expect(state.guesses).toEqual([]);
 		expect(state.showHelp).toEqual(false);
 		expect(state.text).toEqual('Make your Guess!');
@@ -19,14 +19,14 @@ describe('hotColdReducer', () => {
 
 	it('Should return the current state on an unknown action', () => {
 		const currentState = {};
-		const state = hotColdReducer(currentState, { type: '__UNKNOWN' });
+		const state = data(currentState, { type: '__UNKNOWN' });
 		expect(state).toBe(currentState);
 	});
 
 	describe('newGame', () => {
 		it('Should start new game', () => {
 			const currentState = {};
-			const state = hotColdReducer(currentState, newGame());
+			const state = data(currentState, newGame());
 			expect(state.guesses).toEqual([]);
 			expect(state.showHelp).toEqual(false);
 			expect(state.text).toEqual('Make your Guess!');
@@ -41,7 +41,7 @@ describe('hotColdReducer', () => {
 				answer: 37,
 				showHelp: false
 			};
-			const state = hotColdReducer(currentState, toggleHelp());
+			const state = data(currentState, toggleHelp());
 			expect(state.guesses).toEqual(currentState.guesses);
 			expect(state.answer).toEqual(currentState.answer);
 			expect(state.showHelp).toEqual(!currentState.showHelp);
@@ -57,7 +57,7 @@ describe('hotColdReducer', () => {
 				answer: 37,
 				showAnswer: false
 			};
-			const state = hotColdReducer(currentState, toggleAnswer());
+			const state = data(currentState, toggleAnswer());
 			expect(state.guesses).toEqual(currentState.guesses);
 			expect(state.answer).toEqual(currentState.answer);
 			expect(state.showHelp).toEqual(currentState.showHelp);
@@ -69,7 +69,7 @@ describe('hotColdReducer', () => {
 
 	describe('handleGuess', () => {
 		it('Should handle user guess', () => {
-			const startState = hotColdReducer({}, newGame());
+			const startState = data({}, newGame());
 			expect(startState.guesses).toEqual([]);
 			expect(startState.showHelp).toEqual(false);
 			expect(startState.text).toEqual('Make your Guess!');
@@ -78,7 +78,7 @@ describe('hotColdReducer', () => {
 
 			const guess = Math.abs(startState.answer - 1);
 			const text = Utils.handleComment(guess, startState.answer);
-			const state = hotColdReducer(startState, handleGuess(guess));
+			const state = data(startState, handleGuess(guess));
 
 			expect(state.guesses.length).toEqual(1);
 			expect(state.guesses[0]).toEqual(guess);
@@ -89,11 +89,11 @@ describe('hotColdReducer', () => {
 		});
 
 		it('Should handle a second user guess', () => {
-			const startState = hotColdReducer({}, newGame());
+			const startState = data({}, newGame());
 
 			const guess1 = Math.abs(startState.answer - 1);
 			let text = Utils.handleComment(guess1, startState.answer);
-			let state = hotColdReducer(startState, handleGuess(guess1));
+			let state = data(startState, handleGuess(guess1));
 
 			expect(state.guesses.length).toEqual(1);
 			expect(state.guesses[0]).toEqual(guess1);
@@ -104,7 +104,7 @@ describe('hotColdReducer', () => {
 
 			const guess2 = Math.abs(startState.answer - 2);
 			text = Utils.handleComment(guess2, startState.answer);
-			state = hotColdReducer(state, handleGuess(guess2));
+			state = data(state, handleGuess(guess2));
 
 			expect(state.guesses.length).toEqual(2);
 			expect(state.guesses[0]).toEqual(guess1);
@@ -116,11 +116,11 @@ describe('hotColdReducer', () => {
 		});
 
 		it('Should handle duplicate user guess', () => {
-			const startState = hotColdReducer({}, newGame());
+			const startState = data({}, newGame());
 
 			const guess1 = Math.abs(startState.answer - 1);
 			let text = Utils.handleComment(guess1, startState.answer);
-			let state = hotColdReducer(startState, handleGuess(guess1));
+			let state = data(startState, handleGuess(guess1));
 
 			expect(state.guesses.length).toEqual(1);
 			expect(state.guesses[0]).toEqual(guess1);
@@ -131,7 +131,7 @@ describe('hotColdReducer', () => {
 
 			const guess2 = guess1;
 			text = Utils.handleComment(guess2, startState.answer);
-			state = hotColdReducer(state, handleGuess(guess2));
+			state = data(state, handleGuess(guess2));
 
 			expect(state.guesses.length).toEqual(1);
 			expect(state.guesses[0]).toEqual(guess1);
@@ -142,7 +142,7 @@ describe('hotColdReducer', () => {
 		});
 
 		it('Should handle user guessed correctly', () => {
-			const startState = hotColdReducer({}, newGame());
+			const startState = data({}, newGame());
 			expect(startState.guesses).toEqual([]);
 			expect(startState.showHelp).toEqual(false);
 			expect(startState.text).toEqual('Make your Guess!');
@@ -151,7 +151,7 @@ describe('hotColdReducer', () => {
 
 			const guess = startState.answer;
 			const text = Utils.handleComment(guess, startState.answer);
-			const state = hotColdReducer(startState, handleGuess(guess));
+			const state = data(startState, handleGuess(guess));
 
 			expect(state.guesses.length).toEqual(1);
 			expect(state.guesses[0]).toEqual(guess);
