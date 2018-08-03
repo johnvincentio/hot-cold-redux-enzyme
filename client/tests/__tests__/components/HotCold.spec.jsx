@@ -37,7 +37,7 @@ describe('HotCold integration', () => {
 		});
 	});
 
-	describe.only('properties-state', () => {
+	describe('properties-state', () => {
 		it('Check initial state', () => {
 			mount(
 				<Provider store={store}>

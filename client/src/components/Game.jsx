@@ -12,7 +12,7 @@ import Status from './Status';
 
 import './game.scss';
 
-const Game = props => (
+export const Game = props => (
 	<main className="game">
 		<Feedback feedback={props.text} />
 		<GuessForm />
