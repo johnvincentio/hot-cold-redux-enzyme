@@ -1,0 +1,25 @@
+{
+	"name": "hot-cold-enzyme",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "cd server && node server.js",
+		"test-server": "cd server && npm install && LOG_LEVEL=info mocha ./test --exit",
+		"test": "cd client && npm install && npm run prod && npm test && cd ../server && npm install && LOG_LEVEL=info mocha ./test --exit",
+		"heroku-postbuild": "cd server && npm install && cd ../client && npm install --only=dev && npm install && npm run prod"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"ajv": "^6.0.0",
+		"eslint": "^4.9.0",
+		"eslint-config-airbnb": "^16.1.0",
+		"eslint-config-prettier": "^2.9.0",
+		"eslint-loader": "^1.9.0",
+		"eslint-plugin-import": "^2.7.0",
+		"eslint-plugin-jsx-a11y": "^6.0.2",
+		"eslint-plugin-react": "^7.4.0"
+	}
+}

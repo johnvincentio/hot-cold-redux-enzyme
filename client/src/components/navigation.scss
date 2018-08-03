@@ -1,0 +1,40 @@
+//
+
+@import '../../scss/variables';
+
+.navigation {
+  nav {
+    position: relative;
+    height: 10%;
+    padding: 1em;
+  }
+
+  li {
+    &:first-child {
+      float: left;
+    }
+    &:last-child {
+      float: right;
+    }
+  }
+
+  button {
+    color: $white-color;
+    cursor: pointer;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background: $body-background-color;
+
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 1.2em;
+  }
+
+  h1 {
+    font-weight: 900;
+    font-size: 3em;
+    padding: 0.8em;
+    color: $white-color;
+  }
+}
