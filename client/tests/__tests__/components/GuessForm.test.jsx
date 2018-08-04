@@ -60,15 +60,13 @@ describe('<GuessForm />', () => {
 
 	describe('callbacks-events', () => {
 		it('Find the button', () => {
-			const callback = jest.fn();
 			mount(
 				<GuessForm answer={answer} victory={victory} showAnswer={showAnswer} actions={actions} />
 			);
-			expect(callback).not.toHaveBeenCalled();
+			expect(actions.handleGuess).not.toHaveBeenCalled();
 		});
 
 		it('Fire the button', () => {
-			const callback = jest.fn();
 			const wrapper = mount(
 				<GuessForm answer={answer} victory={victory} showAnswer={showAnswer} actions={actions} />
 			);
@@ -76,12 +74,11 @@ describe('<GuessForm />', () => {
 			wrapper.find('input[type="text"]').instance().value = value;
 			expect(wrapper.find('button').text()).toEqual('Guess');
 			wrapper.find('button').simulate('click');
-			expect(callback).toHaveBeenCalled();
-			expect(callback).toHaveBeenCalledWith(value);
+			expect(actions.handleGuess).toHaveBeenCalled();
+			expect(actions.handleGuess).toHaveBeenCalledWith(value);
 		});
 
 		it('Should reset input', () => {
-			const callback = jest.fn();
 			const wrapper = mount(
 				<GuessForm answer={answer} victory={victory} showAnswer={showAnswer} actions={actions} />
 			);
@@ -92,27 +89,13 @@ describe('<GuessForm />', () => {
 		});
 
 		it('Ask for Help', () => {
-			const callback = jest.fn();
 			const wrapper = mount(
-				<GuessForm
-					handleGuess={callback}
-					answer={answer}
-					victory={victory}
-					showAnswer={showAnswer}
-					actions={actions}
-				/>
+				<GuessForm answer={answer} victory={victory} showAnswer={showAnswer} actions={actions} />
 			);
 			expect(wrapper.find('p').exists()).toBeFalsy();
 			wrapper.find('input[type="text"]').instance().value = '?';
 			wrapper.find('button').simulate('click');
-			expect(callback).not.toHaveBeenCalled();
-			expect(wrapper.state().showAnswer).toEqual(true);
-			expect(wrapper.find('p').exists()).toBeTruthy();
-
-			wrapper.find('button').simulate('click');
-			expect(callback).not.toHaveBeenCalled();
-			expect(wrapper.state().showAnswer).toEqual(false);
-			expect(wrapper.find('p').exists()).toBeFalsy();
+			expect(actions.handleGuess).toHaveBeenCalled();
 		});
 	});
 });
