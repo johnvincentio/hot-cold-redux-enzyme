@@ -35,13 +35,6 @@ describe('<GuessForm />', () => {
 	});
 
 	describe('properties-state', () => {
-		// it('Check state', () => {
-		// 	const wrapper = shallow(
-		// 		<GuessForm answer={answer} victory={victory} showAnswer={showAnswer} actions={actions} />
-		// 	);
-		// 	expect(wrapper.state().showAnswer).toEqual(false);
-		// });
-
 		it('Victory found', () => {
 			const truth = true;
 			const wrapper = shallow(
