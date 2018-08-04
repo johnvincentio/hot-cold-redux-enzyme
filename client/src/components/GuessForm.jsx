@@ -10,7 +10,7 @@ import * as actions from '../redux/actions';
 
 import './guessForm.scss';
 
-class GuessForm extends React.Component {
+export class GuessForm extends React.Component {
 	handleGuess = () => {
 		const input = this.guessInput.value;
 		if (input === '?') {
@@ -68,11 +68,8 @@ GuessForm.propTypes = {
 function mapStateToProps(state) {
 	// console.log('GuessForm::mapStateToProps, state ', state);
 	return {
-		guesses: state.data.guesses,
 		answer: state.data.answer,
-		text: state.data.text,
 		victory: state.data.victory,
-		showHelp: state.data.showHelp,
 		showAnswer: state.data.showAnswer
 	};
 }
